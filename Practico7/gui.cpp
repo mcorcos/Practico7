@@ -127,8 +127,16 @@ void Gui::start_GUI() {
 
             ImGui::InputText("Select the directory path", direct_path, IM_ARRAYSIZE(direct_path));
             if (ImGui::Button("Ok")) {
-                if (!dcomp.decompress(direct_path)) {
-                    std::cout << "could not compress" << std::endl;
+                if (loaded == false)
+                {
+                    get_all(direct_path, ".EDA", png_files);
+                    loaded = true;
+                }
+                for (int j = 0; j < png_files.size(); j++)
+                {
+                    if (!dcomp.decompress(png_files[0].string().c_str())) {
+                        std::cout << "could not compress" << std::endl;
+                    }
                 }
                 running = false; //quitar esto al dejar todo listo pipicucu
             }
