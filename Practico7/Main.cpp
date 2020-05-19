@@ -18,14 +18,17 @@ int main(void)
     compressor comp;
     decompressor dcomp;
 
+    cout << "aca" << endl;
     if (!comp.compress(img_in, img_compressed)) {
         std::cout << "could not compress" << std::endl;
         return -1;
     }
+    cout << "aca" << endl;
     if (!dcomp.decompress(img_compressed)) {
         std::cout << "could not decompress" << std::endl;
         return -1;
     }
+    cout << "aca" << endl;
 
     return 0;
 }
