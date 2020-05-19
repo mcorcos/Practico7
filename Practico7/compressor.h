@@ -24,12 +24,14 @@ public:
 	compressor();
 	~compressor();
 	void setthreshold(int);
-	bool compress(const char* img_in, const char* img_out);
+	bool compress(const char* img_in);
 private:
 	void decode_img(const char* img_in);
 	void compress_img(unsigned char* img, vector<unsigned char>& image_code, unsigned int w, unsigned int h);
 	struct prom check_data(unsigned char* img, unsigned int w, unsigned int h);
 	void save_file(const char* img_out);
+
+	string create_compressed_name(const char* compressed_img);
 
 	unsigned int w, h;
 	unsigned char* img;

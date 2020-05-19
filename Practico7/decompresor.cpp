@@ -97,3 +97,5 @@ void decompressor::recDecompressor(unsigned char* DecImage, unsigned int level)
 		cout << "Error algo salio mal durante el proceso." << endl;
 	}
 }
+
+

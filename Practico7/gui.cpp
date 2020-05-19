@@ -16,7 +16,8 @@ Gui::Gui() {
     show_decompress_window = false;
     show_compress_window_last = false;
     loaded = false;
-    pos_img_y = 100;
+    checkbox = false;
+    pos_img_y = 400;
 }
 Gui::~Gui() {
 
@@ -176,27 +177,49 @@ void Gui::start_GUI() {
             if (loaded == false)
             {
                 get_all(direct_path, ".png", png_files);
+                get_all(direct_path, ".png", imagenes);
                 loaded = true;
             }
             for (int i = 0; i < png_files.size(); i++)
             {
-            img = al_load_bitmap(png_files[i].string().c_str()); //recordar destruir estos objetos en el destructor. ademas deberia ser parte de la clase este que sera un vector de allegro bitmaps
-            if ((i) % 10 == 0 && i != 0) //+1 para que no me tome el cero
-            {
-                pos_img_y += 100;
+                img = al_load_bitmap(png_files[i].string().c_str()); //recordar destruir estos objetos en el destructor. ademas deberia ser parte de la clase este que sera un vector de allegro bitmaps
+                if ((i) % 10 == 0 && i != 0) //+1 para que no me tome el cero
+                {
+                    pos_img_y += 100;
+                }
+                al_draw_scaled_bitmap(img, 0, 0, al_get_bitmap_width(img), al_get_bitmap_height(img),
+                    100 * (i % 10), pos_img_y, 100, 100, NULL);
             }
-            al_draw_scaled_bitmap(img, 0, 0, al_get_bitmap_width(img), al_get_bitmap_height(img), 
-                                    100*(i%10), pos_img_y, 100, 100, NULL);
+            pos_img_y = 400;
+
+
+            for (int j = 0; j < imagenes.size(); j++) {
+
+                if (ImGui::Checkbox(imagenes[j].string().c_str(), &checkbox)) {
+                    vec_imgs.push_back(imagenes[j].string());
+                    cout << "seleccionada" << endl;
+
+                }
+
             }
-            pos_img_y = 100;
+
             if (ImGui::Button("Ok")) {
+
                 compr.setthreshold(threshold2);
-                for (int j = 0; j < png_files.size(); j++) {
-                    if (!compr.compress(png_files[j].string().c_str(), "img.EDA")) {
+
+                cout << "comprimiendo" << endl;
+                cout << vec_imgs.size() << endl;
+
+                for (int j = 0; j < vec_imgs.size(); j++) {
+
+                    if (!compr.compress(vec_imgs[j].c_str())) {
                         std::cout << "could not compress" << std::endl;
                     }
                 }
-                running = false; 
+                cout << "sali de comprimiendo" << endl;
+                show_compress_window_last = false;
+                running = false;
+
             }
             ImGui::End();
         }

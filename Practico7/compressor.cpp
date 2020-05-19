@@ -19,12 +19,12 @@ void compressor::setthreshold(int threshold_gui)
 }
 ;
 
-bool compressor::compress(const char* img_in, const char* img_out) {
+bool compressor::compress(const char* img_in) {
 
 	decode_img(img_in);
 
 	compress_img(img, image_code, w, h);
-	save_file(img_out);
+	save_file(create_compressed_name(img_in).c_str());
 	return true;
 }
 
@@ -159,3 +159,10 @@ void compressor::save_file(const char* img_out) {
 
 
 
+
+string compressor::create_compressed_name(const char* compressed_img)
+{
+	string compressed_img_string = compressed_img;
+	compressed_img_string.replace(compressed_img_string.length() - strlen("png"), strlen("png"), "EDA");	//cambia la terminacion .var por .png elegida para el archivo comprimido
+	return compressed_img_string;
+}

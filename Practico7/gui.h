@@ -30,6 +30,8 @@ private:
 	ALLEGRO_EVENT_QUEUE* queue;
 	ALLEGRO_BITMAP* img;
 	vector <boost::filesystem::path> png_files;
+	vector <boost::filesystem::path> imagenes;
+	vector <std::string> vec_imgs;
 	int threshold2;
 	int counter;
 	char direct_path[200] = "";
@@ -41,6 +43,7 @@ private:
 	bool show_decompress_window;
 	bool show_compress_window_last;
 	bool loaded;
+	bool checkbox;
 	int pos_img_y;
 	compressor compr;
 	decompressor dcomp;
