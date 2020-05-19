@@ -178,6 +178,11 @@ void Gui::start_GUI() {
             {
                 get_all(direct_path, ".png", png_files);
                 get_all(direct_path, ".png", imagenes);
+                checkboxes.resize(imagenes.size());
+                for (int k = 0; k < imagenes.size(); k++)
+                {
+                    checkboxes.at(k) = false;
+                }
                 loaded = true;
             }
             for (int i = 0; i < png_files.size(); i++)
@@ -191,27 +196,24 @@ void Gui::start_GUI() {
                     100 * (i % 10), pos_img_y, 100, 100, NULL);
             }
             pos_img_y = 400;
-
-
             for (int j = 0; j < imagenes.size(); j++) {
-
-                if (ImGui::Checkbox(imagenes[j].string().c_str(), &checkbox)) {
-                    vec_imgs.push_back(imagenes[j].string());
+                bool c = checkboxes.at(j);
+                if (ImGui::Checkbox(imagenes[j].string().c_str(), &c)) {
+                    vec_imgs.at(j) = imagenes[j].string();
                     cout << "seleccionada" << endl;
-
+                    checkboxes.at(j) = c;
                 }
-
+                
             }
             if (ImGui::Button("Select All")) {
-                if (vec_imgs.size() == 0) {
-                    for (int j = 0; j < imagenes.size(); j++) {
-                        vec_imgs.push_back(imagenes[j].string());
-                    }
+                for (int j = 0; j < imagenes.size(); j++) {
+                    checkboxes.at(j) = true;
                 }
             }
             if (ImGui::Button("Select None")) {
-
-                vec_imgs.clear();
+                for (int j = 0; j < imagenes.size(); j++) {
+                    checkboxes.at(j) = false;
+                }
             }
 
             if (ImGui::Button("Ok")) {

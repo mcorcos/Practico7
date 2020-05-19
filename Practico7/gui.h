@@ -32,6 +32,7 @@ private:
 	vector <boost::filesystem::path> png_files;
 	vector <boost::filesystem::path> imagenes;
 	vector <std::string> vec_imgs;
+	vector <bool> checkboxes;
 	int threshold2;
 	int counter;
 	char direct_path[200] = "";
