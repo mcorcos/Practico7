@@ -1,7 +1,7 @@
 #include <iostream>
 #include "compressor.h"
 #include "decompresor.h"
-//#include "gui.h"
+#include "gui.h"
 
 
 // dear imgui: standalone example application for Allegro 5
@@ -17,18 +17,18 @@ int main(void)
 
     compressor comp;
     decompressor dcomp;
+    //Gui gui;
 
-    cout << "aca" << endl;
+   // gui.start_GUI();
+
     if (!comp.compress(img_in, img_compressed)) {
         std::cout << "could not compress" << std::endl;
         return -1;
     }
-    cout << "aca" << endl;
     if (!dcomp.decompress(img_compressed)) {
         std::cout << "could not decompress" << std::endl;
         return -1;
     }
-    cout << "aca" << endl;
 
     return 0;
 }

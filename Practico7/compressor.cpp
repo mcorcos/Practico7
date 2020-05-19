@@ -18,7 +18,7 @@ bool compressor::compress(const char* img_in, const char* img_out) {
 
 	decode_img(img_in);
 
-	compress_img(img, w, h, image_code);
+	compress_img(img, image_code, w, h);
 	save_file(img_out);
 	return true;
 }
@@ -34,7 +34,7 @@ void compressor::decode_img(const char* img_in) {
 	image_code.push_back((int)log2(w));
 }
 
-void compressor::compress_img(unsigned char* img, unsigned int w, unsigned int h, vector<unsigned char>& image_code) {
+void compressor::compress_img(unsigned char* img, vector<unsigned char>& image_code, unsigned int w, unsigned int h) {
 
 	struct prom data = check_data(img, w, h);
 
@@ -56,10 +56,12 @@ void compressor::compress_img(unsigned char* img, unsigned int w, unsigned int h
 	}
 
 	image_code.push_back(1);
-	compress_img(img, w / 2, h / 2, image_code);
-	compress_img(img + 4 * (w / 2), w / 2, h / 2, image_code);
-	compress_img(img + 4 * ((this->w) * (h / 2)), w / 2, h / 2, image_code);
-	compress_img(img + 4 * ((this->w) * (h / 2) + (w / 2)), w / 2, h / 2, image_code);
+	w /= 2;
+	h /= 2;
+	compress_img(img, image_code, w , h );
+	compress_img(img + 4 * (w ), image_code, w , h );
+	compress_img(img + 4 * ((this->w) * (h)), image_code, w, h);
+	compress_img(img + 4 * ((this->w) * (h) + (w)), image_code, w, h);
 
 
 
