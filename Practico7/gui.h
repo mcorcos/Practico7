@@ -31,8 +31,14 @@ private:
 	ALLEGRO_BITMAP* img;
 	vector <boost::filesystem::path> png_files;
 	vector <boost::filesystem::path> imagenes;
+	vector <boost::filesystem::path> EDAvec;
+
 	vector <std::string> vec_imgs;
+	vector <std::string> vec_EDA;
+
 	vector <bool> checkboxes;
+	vector <bool> checkboxesEDA;
+
 	int threshold2;
 	int counter;
 	char direct_path[200] = "";
@@ -45,6 +51,8 @@ private:
 	bool show_compress_window_last;
 	bool loaded;
 	bool checkbox;
+	bool onetime;
+	bool show_decompress_window_last;
 	int pos_img_y;
 	compressor compr;
 	decompressor dcomp;

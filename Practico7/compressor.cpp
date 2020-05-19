@@ -166,3 +166,16 @@ string compressor::create_compressed_name(const char* compressed_img)
 	compressed_img_string.replace(compressed_img_string.length() - strlen("png"), strlen("png"), "EDA");	//cambia la terminacion .var por .png elegida para el archivo comprimido
 	return compressed_img_string;
 }
+
+
+
+//
+//bool compressor::ok_data(unsigned int w, unsigned int h) {
+//	if (w != h) {
+//		return false;
+//	}
+//	else {
+//		return true
+//	}
+//}
+//

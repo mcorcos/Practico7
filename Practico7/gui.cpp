@@ -16,7 +16,9 @@ Gui::Gui() {
     show_decompress_window = false;
     show_compress_window_last = false;
     loaded = false;
+    onetime = false;
     checkbox = false;
+    show_decompress_window_last = false;
     pos_img_y = 400;
 }
 Gui::~Gui() {
@@ -123,19 +125,24 @@ void Gui::start_GUI() {
             ImGui::Text("Select the path of the images to decompress");               // Display some text (you can use a format strings too)
 
             ImGui::InputText("Select the directory path", direct_path, IM_ARRAYSIZE(direct_path));
+
+
             if (ImGui::Button("Ok")) {
-                if (loaded == false)
-                {
-                    get_all(direct_path, ".EDA", png_files);
-                    loaded = true;
-                }
-                for (int j = 0; j < png_files.size(); j++)
-                {
-                    if (!dcomp.decompress(png_files[j].string().c_str())) {
-                        std::cout << "could not compress" << std::endl;
-                    }
-                }
-                running = false;
+                //if (loaded == false)
+                //{
+                //    get_all(direct_path, ".EDA", EDAvec);
+                //    loaded = true;
+                //}
+                show_decompress_window = false;
+                show_decompress_window_last = true;
+
+                //for (int j = 0; j < png_files.size(); j++)
+                //{
+                //    if (!dcomp.decompress(png_files[j].string().c_str())) {
+                //        std::cout << "could not compress" << std::endl;
+                //    }
+                //}
+                //running = false;
             }
             ImGui::SameLine();
             if (ImGui::Button("Cancel"))
@@ -147,6 +154,73 @@ void Gui::start_GUI() {
             }
             ImGui::End();
         }
+
+
+        if (show_decompress_window_last) {
+
+
+            ImGui::Begin("Decompress");
+            if (onetime == false)
+            {
+                get_all(direct_path, ".EDA", EDAvec);
+                checkboxesEDA.resize(EDAvec.size());
+                for (int k = 0; k < EDAvec.size(); k++)
+                {
+                    checkboxesEDA.at(k) = false;
+                }
+                onetime = true;
+            }
+            cout << EDAvec.size() << endl;
+            for (int j = 0; j < EDAvec.size(); j++) {
+
+                bool c = checkboxesEDA.at(j);
+
+                if (ImGui::Checkbox(EDAvec[j].string().c_str(), &c)) {
+                    checkboxesEDA.at(j) = c;
+                }
+
+            }
+
+            if (ImGui::Button("Select All")) {
+                for (int j = 0; j < EDAvec.size(); j++) {
+                    checkboxesEDA.at(j) = true;
+                }
+            }
+
+            if (ImGui::Button("Select None")) {
+                for (int j = 0; j < EDAvec.size(); j++) {
+                    checkboxesEDA.at(j) = false;
+                }
+            }
+
+            if (ImGui::Button("Ok")) {
+
+
+                for (int i = 0;i < checkboxesEDA.size();i++) {
+                    if (checkboxesEDA.at(i)) {
+                        vec_EDA.push_back(EDAvec[i].string());
+                    }
+                }
+
+
+                for (int j = 0; j < vec_EDA.size(); j++) {
+
+                    if (!dcomp.decompress(vec_EDA[j].c_str())) {
+                        std::cout << "could not compress" << std::endl;
+                    }
+                }
+
+                cout << "sali de descomprimiendo" << endl;
+                show_compress_window_last = false;
+                running = false;
+
+            }
+            ImGui::End();
+
+
+        }
+
+
 
         if (show_compress_window)
         {
@@ -184,6 +258,7 @@ void Gui::start_GUI() {
                     checkboxes.at(k) = false;
                 }
                 loaded = true;
+                cout << imagenes.size() << endl;
             }
             for (int i = 0; i < png_files.size(); i++)
             {
@@ -192,15 +267,15 @@ void Gui::start_GUI() {
                 {
                     pos_img_y += 100;
                 }
+
                 al_draw_scaled_bitmap(img, 0, 0, al_get_bitmap_width(img), al_get_bitmap_height(img),
-                    100 * (i % 10), pos_img_y, 100, 100, NULL);
+                    110 * (i % 10), pos_img_y, 100, 100, NULL);
             }
             pos_img_y = 400;
             for (int j = 0; j < imagenes.size(); j++) {
                 bool c = checkboxes.at(j);
+
                 if (ImGui::Checkbox(imagenes[j].string().c_str(), &c)) {
-                    vec_imgs.at(j) = imagenes[j].string();
-                    cout << "seleccionada" << endl;
                     checkboxes.at(j) = c;
                 }
                 
@@ -220,15 +295,20 @@ void Gui::start_GUI() {
 
                 compr.setthreshold(threshold2);
 
-                if (vec_imgs.size() <= imagenes.size()) {
-
-                    for (int j = 0; j < vec_imgs.size(); j++) {
-
-                        if (!compr.compress(vec_imgs[j].c_str())) {
-                            std::cout << "could not compress" << std::endl;
-                        }
+                for (int i = 0;i < checkboxes.size();i++) {
+                    if (checkboxes.at(i)) {
+                        vec_imgs.push_back(imagenes[i].string());
                     }
                 }
+
+
+                for (int j = 0; j < vec_imgs.size(); j++) {
+
+                    if (!compr.compress(vec_imgs[j].c_str())) {
+                        std::cout << "could not compress" << std::endl;
+                    }
+                }
+
                 cout << "sali de comprimiendo" << endl;
                 show_compress_window_last = false;
                 running = false;

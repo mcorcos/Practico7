@@ -32,7 +32,7 @@ private:
 	void save_file(const char* img_out);
 
 	string create_compressed_name(const char* compressed_img);
-
+	//bool ok_data(const char* img_in);
 	unsigned int w, h;
 	unsigned char* img;
 	int threshold;

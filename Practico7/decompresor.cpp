@@ -98,4 +98,3 @@ void decompressor::recDecompressor(unsigned char* DecImage, unsigned int level)
 	}
 }
 
-
