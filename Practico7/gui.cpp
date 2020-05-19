@@ -1,8 +1,6 @@
 #include "gui.h"
 
 
-
-
 Gui::Gui() {
 
     inicializa_allegro();
@@ -11,7 +9,6 @@ Gui::Gui() {
     counter = 0;
     clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    // Main loop
     show_demo_window = true;
     show_main_window = true;
     running = true;
@@ -38,7 +35,6 @@ void Gui::init_ImGui() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -58,7 +54,7 @@ void Gui::inicializa_allegro(void)
     display = al_create_display(1280, 720);
     queue = al_create_event_queue();
 
-    al_set_window_title(display, "Dear ImGui Allegro 5 example");
+    al_set_window_title(display, "MMB Compressor");
 
     al_register_event_source(queue, al_get_display_event_source(display));
     al_register_event_source(queue, al_get_keyboard_event_source());
@@ -138,9 +134,8 @@ void Gui::start_GUI() {
                         std::cout << "could not compress" << std::endl;
                     }
                 }
-                running = false; //quitar esto al dejar todo listo pipicucu
+                running = false;
             }
-            //lo que sea que haga con ok (conexion al backend);
             ImGui::SameLine();
             if (ImGui::Button("Cancel"))
             {
@@ -154,9 +149,9 @@ void Gui::start_GUI() {
 
         if (show_compress_window)
         {
-            ImGui::Begin("Compress");                          // Create a window called "Hello, world!" and append into it.
+            ImGui::Begin("Compress");             
 
-            ImGui::Text("Select Parameters to compress");               // Display some text (you can use a format strings too)
+            ImGui::Text("Select Parameters to compress");
 
             ImGui::InputText("Select the directory path", direct_path, IM_ARRAYSIZE(direct_path));
             if (ImGui::Button("Ok")) {
