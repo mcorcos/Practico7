@@ -5,6 +5,8 @@
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_impl_allegro5.h"
 #include <stdio.h>
+#include "compressor.h"
+#include "decompresor.h"
 
 class Gui {
 public:
@@ -18,7 +20,7 @@ private:
 	ALLEGRO_EVENT ev;
 	ALLEGRO_DISPLAY* display;
 	ALLEGRO_EVENT_QUEUE* queue;
-	float threshold2;
+	int threshold2;
 	int counter;
 	char direct_path[200] = "";
 	ImVec4 clear_color;
@@ -27,5 +29,7 @@ private:
 	bool running;
 	bool show_compress_window;
 	bool show_decompress_window;
+	compressor comp;
+	decompressor dcomp;
 
 };

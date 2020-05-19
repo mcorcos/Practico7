@@ -6,7 +6,7 @@ Gui::Gui() {
 
     inicializa_allegro();
     init_ImGui();
-    threshold2 = 0.0f;
+    threshold2 = 0;
     counter = 0;
     clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
@@ -121,8 +121,12 @@ void Gui::start_GUI() {
             ImGui::Text("Select the path of the images to decompress");               // Display some text (you can use a format strings too)
 
             ImGui::InputText("Select the directory path", direct_path, IM_ARRAYSIZE(direct_path));
-            if (ImGui::Button("Ok"))
-                printf("conexion al backend cargar fotos para su seleccion");
+            if (ImGui::Button("Ok")) {
+                if (!dcomp.decompress(direct_path)) {
+                    std::cout << "could not compress" << std::endl;
+                }
+                running = false; //quitar esto al dejar todo listo pipicucu
+            }
             //lo que sea que haga con ok (conexion al backend);
             ImGui::SameLine();
             if (ImGui::Button("Cancel"))
@@ -141,12 +145,16 @@ void Gui::start_GUI() {
 
             ImGui::Text("Select Parameters to compress");               // Display some text (you can use a format strings too)
 
-            ImGui::SliderFloat("threshold", &threshold2, 0.0f, 255.0f);
+            ImGui::SliderInt("threshold", &threshold2, 0, 255);
 
             ImGui::InputText("Select the directory path", direct_path, IM_ARRAYSIZE(direct_path));
-            if (ImGui::Button("Ok"))
-                printf("conexion al backend cargar fotos para su seleccion");
-            //lo que sea que haga con ok (conexion al backend);
+            if (ImGui::Button("Ok")) {
+                comp.setthreshold(threshold2);
+                if (!comp.compress(direct_path, "img.EDA")) {
+                    std::cout << "could not compress" << std::endl;
+                }
+                running = false; //quitar esto al dejar todo listo pipicucu
+            }
             ImGui::SameLine();
             if (ImGui::Button("Cancel"))
             {

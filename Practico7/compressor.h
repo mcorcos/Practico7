@@ -23,6 +23,7 @@ public:
 
 	compressor();
 	~compressor();
+	void setthreshold(int);
 	bool compress(const char* img_in, const char* img_out);
 private:
 	void decode_img(const char* img_in);

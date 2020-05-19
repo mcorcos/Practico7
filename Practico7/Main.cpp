@@ -12,23 +12,23 @@
 
 int main(void)
 {
-    const char* img_in = "img1.png";
-    const char* img_compressed = "img.EDA";
+    /*const char* img_in = "img1.png";
+    const char* img_compressed = "img.EDA";*/
 
     compressor comp;
     decompressor dcomp;
-    //Gui gui;
+    Gui gui;
 
-   // gui.start_GUI();
+    gui.start_GUI();
 
-    if (!comp.compress(img_in, img_compressed)) {
+    /*if (!comp.compress(img_in, img_compressed)) {
         std::cout << "could not compress" << std::endl;
         return -1;
     }
     if (!dcomp.decompress(img_compressed)) {
         std::cout << "could not decompress" << std::endl;
         return -1;
-    }
+    }*/
 
     return 0;
 }

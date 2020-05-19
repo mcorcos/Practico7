@@ -12,7 +12,12 @@ compressor::compressor() {
 };
 compressor::~compressor() {
 
-};
+}
+void compressor::setthreshold(int threshold_gui)
+{
+	threshold = threshold_gui;
+}
+;
 
 bool compressor::compress(const char* img_in, const char* img_out) {
 
