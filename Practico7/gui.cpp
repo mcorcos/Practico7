@@ -202,18 +202,29 @@ void Gui::start_GUI() {
                 }
 
             }
+            if (ImGui::Button("Select All")) {
+                if (vec_imgs.size() == 0) {
+                    for (int j = 0; j < imagenes.size(); j++) {
+                        vec_imgs.push_back(imagenes[j].string());
+                    }
+                }
+            }
+            if (ImGui::Button("Select None")) {
+
+                vec_imgs.clear();
+            }
 
             if (ImGui::Button("Ok")) {
 
                 compr.setthreshold(threshold2);
 
-                cout << "comprimiendo" << endl;
-                cout << vec_imgs.size() << endl;
+                if (vec_imgs.size() <= imagenes.size()) {
 
-                for (int j = 0; j < vec_imgs.size(); j++) {
+                    for (int j = 0; j < vec_imgs.size(); j++) {
 
-                    if (!compr.compress(vec_imgs[j].c_str())) {
-                        std::cout << "could not compress" << std::endl;
+                        if (!compr.compress(vec_imgs[j].c_str())) {
+                            std::cout << "could not compress" << std::endl;
+                        }
                     }
                 }
                 cout << "sali de comprimiendo" << endl;
