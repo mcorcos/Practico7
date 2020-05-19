@@ -15,13 +15,13 @@ int main(void)
     /*const char* img_in = "img1.png";
     const char* img_compressed = "img.EDA";*/
 
-    compressor comp;
+    compressor compr;
     decompressor dcomp;
     Gui gui;
 
     gui.start_GUI();
 
-    /*if (!comp.compress(img_in, img_compressed)) {
+    /*if (!compr.compress(img_in, img_compressed)) {
         std::cout << "could not compress" << std::endl;
         return -1;
     }

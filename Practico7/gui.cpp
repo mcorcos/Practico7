@@ -19,6 +19,7 @@ Gui::Gui() {
     show_decompress_window = false;
     show_compress_window_last = false;
     loaded = false;
+    pos_img_y = 100;
 }
 Gui::~Gui() {
 
@@ -174,19 +175,21 @@ void Gui::start_GUI() {
                 get_all(direct_path, ".png", png_files);
                 loaded = true;
             }
-            //printf("%s", png_files[0].string());
-            //en verdad ahi lo hice re poco bien osea esto en realizad es un vector de imagenes que carga todos los png del directorio, y los dibuja, la posicion de donde los dibuja deberia ir aumentando a medida que lo lee al vector.
             for (int i = 0; i < png_files.size(); i++)
             {
             img = al_load_bitmap(png_files[i].string().c_str()); //recordar destruir estos objetos en el destructor. ademas deberia ser parte de la clase este que sera un vector de allegro bitmaps
-            ////aca deberian ir las imagenes
-            al_draw_scaled_bitmap(img, 0, 0, al_get_bitmap_width(img), al_get_bitmap_height(img), 
-                                    100*i, 100, 100, 100, NULL);
+            if ((i) % 10 == 0 && i != 0) //+1 para que no me tome el cero
+            {
+                pos_img_y += 100;
             }
+            al_draw_scaled_bitmap(img, 0, 0, al_get_bitmap_width(img), al_get_bitmap_height(img), 
+                                    100*(i%10), pos_img_y, 100, 100, NULL);
+            }
+            pos_img_y = 100;
             if (ImGui::Button("Ok")) {
-                comp.setthreshold(threshold2);
+                compr.setthreshold(threshold2);
                 for (int j = 0; j < png_files.size(); j++) {
-                    if (!comp.compress(png_files[j].string().c_str(), "img.EDA")) {
+                    if (!compr.compress(png_files[j].string().c_str(), "img.EDA")) {
                         std::cout << "could not compress" << std::endl;
                     }
                 }

@@ -41,7 +41,8 @@ private:
 	bool show_decompress_window;
 	bool show_compress_window_last;
 	bool loaded;
-	compressor comp;
+	int pos_img_y;
+	compressor compr;
 	decompressor dcomp;
 
 };
