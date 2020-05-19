@@ -16,6 +16,7 @@ Gui::Gui() {
     running = true;
     show_compress_window = false;
     show_decompress_window = false;
+    show_compress_window_last = false;
 
 }
 Gui::~Gui() {
@@ -25,6 +26,7 @@ Gui::~Gui() {
     ImGui::DestroyContext();
     al_destroy_event_queue(queue);
     al_destroy_display(display);
+    al_destroy_bitmap(img);
 
 }
 
@@ -49,6 +51,7 @@ void Gui::inicializa_allegro(void)
     al_install_keyboard();
     al_install_mouse();
     al_init_primitives_addon();
+    al_init_image_addon();
     al_set_new_display_flags(ALLEGRO_RESIZABLE);
     display = al_create_display(1280, 720);
     queue = al_create_event_queue();
@@ -145,15 +148,10 @@ void Gui::start_GUI() {
 
             ImGui::Text("Select Parameters to compress");               // Display some text (you can use a format strings too)
 
-            ImGui::SliderInt("threshold", &threshold2, 0, 255);
-
             ImGui::InputText("Select the directory path", direct_path, IM_ARRAYSIZE(direct_path));
             if (ImGui::Button("Ok")) {
-                comp.setthreshold(threshold2);
-                if (!comp.compress(direct_path, "img.EDA")) {
-                    std::cout << "could not compress" << std::endl;
-                }
-                running = false; //quitar esto al dejar todo listo pipicucu
+                show_compress_window = false;
+                show_compress_window_last = true;
             }
             ImGui::SameLine();
             if (ImGui::Button("Cancel"))
@@ -166,6 +164,25 @@ void Gui::start_GUI() {
             ImGui::End();
         }
 
+        if (show_compress_window_last)
+        {
+            ImGui::Begin("Compress");
+            ImGui::SliderInt("threshold", &threshold2, 0, 255);
+            
+            //en verdad ahi lo hice re poco bien osea esto en realizad es un vector de imagenes que carga todos los png del directorio, y los dibuja, la posicion de donde los dibuja deberia ir aumentando a medida que lo lee al vector.
+            img = al_load_bitmap(direct_path); //recordar destruir estos objetos en el destructor. ademas deberia ser parte de la clase este que sera un vector de allegro bitmaps
+            //aca deberian ir las imagenes
+            al_draw_scaled_bitmap(img, 0, 0, al_get_bitmap_width(img), al_get_bitmap_height(img), 
+                                    0, 100, 100, 100, NULL);
+            if (ImGui::Button("Ok")) {
+                comp.setthreshold(threshold2);
+                if (!comp.compress(direct_path, "img.EDA")) {
+                    std::cout << "could not compress" << std::endl;
+                }
+                running = false; //quitar esto al dejar todo listo pipicucu
+            }
+            ImGui::End();
+        }
         // Rendering
         ImGui::Render();
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
