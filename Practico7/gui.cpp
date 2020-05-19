@@ -20,7 +20,10 @@ Gui::Gui() {
     checkbox = false;
     show_decompress_window_last = false;
     pos_img_y = 400;
+    vec_imgs.clear();
 }
+
+
 Gui::~Gui() {
 
     // Cleanup
@@ -31,6 +34,7 @@ Gui::~Gui() {
     al_destroy_bitmap(img);
 
 }
+
 
 void Gui::init_ImGui() {
 
@@ -46,6 +50,8 @@ void Gui::init_ImGui() {
     // Setup Platform/Renderer bindings
     ImGui_ImplAllegro5_Init(display);
 }
+
+
 void Gui::inicializa_allegro(void)
 {
     al_init();
@@ -64,14 +70,11 @@ void Gui::inicializa_allegro(void)
     al_register_event_source(queue, al_get_mouse_event_source());
 }
 
+
+
 void Gui::start_GUI() {
     while (running)
     {
-        // Poll and handle events (inputs, window resize, etc.)
-        // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
-        // - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-        // - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
-        // Generally you may always pass all inputs to dear imgui, and hide them from your application based on those two flags.
 
         while (al_get_next_event(queue, &ev))
         {
@@ -87,7 +90,6 @@ void Gui::start_GUI() {
                 ImGui_ImplAllegro5_CreateDeviceObjects();
             }
         }
-
 
         al_clear_to_color(al_map_rgb_f(0, 0, 0));
         // Start the Dear ImGui frame
@@ -170,7 +172,7 @@ void Gui::start_GUI() {
                 }
                 onetime = true;
             }
-            cout << EDAvec.size() << endl;
+
             for (int j = 0; j < EDAvec.size(); j++) {
 
                 bool c = checkboxesEDA.at(j);
@@ -210,7 +212,6 @@ void Gui::start_GUI() {
                     }
                 }
 
-                cout << "sali de descomprimiendo" << endl;
                 show_compress_window_last = false;
                 running = false;
 
@@ -258,7 +259,7 @@ void Gui::start_GUI() {
                     checkboxes.at(k) = false;
                 }
                 loaded = true;
-                cout << imagenes.size() << endl;
+
             }
             for (int i = 0; i < png_files.size(); i++)
             {
@@ -309,13 +310,14 @@ void Gui::start_GUI() {
                     }
                 }
 
-                cout << "sali de comprimiendo" << endl;
+
                 show_compress_window_last = false;
                 running = false;
 
             }
             ImGui::End();
         }
+
         // Rendering
         ImGui::Render();
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());

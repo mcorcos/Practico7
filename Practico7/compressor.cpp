@@ -22,10 +22,13 @@ void compressor::setthreshold(int threshold_gui)
 bool compressor::compress(const char* img_in) {
 
 	decode_img(img_in);
+	if (ok_data()) {
+		compress_img(img, image_code, w, h);
+		save_file(create_compressed_name(img_in).c_str());
+		image_code.clear();
+		return true;
+	}
 
-	compress_img(img, image_code, w, h);
-	save_file(create_compressed_name(img_in).c_str());
-	return true;
 }
 
 
@@ -169,13 +172,17 @@ string compressor::create_compressed_name(const char* compressed_img)
 
 
 
-//
-//bool compressor::ok_data(unsigned int w, unsigned int h) {
-//	if (w != h) {
-//		return false;
-//	}
-//	else {
-//		return true
-//	}
-//}
-//
+
+bool compressor::ok_data() {
+	if (w != h) {
+		return false;
+	}
+	if (abs(log2(w) - floor(log2(w))) > 0.0001 ) {
+		return false;
+
+	}
+	else {
+		return true;
+	}
+}
+
