@@ -2,6 +2,7 @@
 
 
 
+
 Gui::Gui() {
 
     inicializa_allegro();
@@ -17,7 +18,7 @@ Gui::Gui() {
     show_compress_window = false;
     show_decompress_window = false;
     show_compress_window_last = false;
-
+    loaded = false;
 }
 Gui::~Gui() {
 
@@ -168,18 +169,28 @@ void Gui::start_GUI() {
         {
             ImGui::Begin("Compress");
             ImGui::SliderInt("threshold", &threshold2, 0, 255);
-            
+            if (loaded == false)
+            {
+                get_all(direct_path, ".png", png_files);
+                loaded = true;
+            }
+            //printf("%s", png_files[0].string());
             //en verdad ahi lo hice re poco bien osea esto en realizad es un vector de imagenes que carga todos los png del directorio, y los dibuja, la posicion de donde los dibuja deberia ir aumentando a medida que lo lee al vector.
-            img = al_load_bitmap(direct_path); //recordar destruir estos objetos en el destructor. ademas deberia ser parte de la clase este que sera un vector de allegro bitmaps
-            //aca deberian ir las imagenes
+            for (int i = 0; i < png_files.size(); i++)
+            {
+            img = al_load_bitmap(png_files[i].string().c_str()); //recordar destruir estos objetos en el destructor. ademas deberia ser parte de la clase este que sera un vector de allegro bitmaps
+            ////aca deberian ir las imagenes
             al_draw_scaled_bitmap(img, 0, 0, al_get_bitmap_width(img), al_get_bitmap_height(img), 
-                                    0, 100, 100, 100, NULL);
+                                    100*i, 100, 100, 100, NULL);
+            }
             if (ImGui::Button("Ok")) {
                 comp.setthreshold(threshold2);
-                if (!comp.compress(direct_path, "img.EDA")) {
-                    std::cout << "could not compress" << std::endl;
+                for (int j = 0; j < png_files.size(); j++) {
+                    if (!comp.compress(png_files[j].string().c_str(), "img.EDA")) {
+                        std::cout << "could not compress" << std::endl;
+                    }
                 }
-                running = false; //quitar esto al dejar todo listo pipicucu
+                running = false; 
             }
             ImGui::End();
         }
@@ -188,4 +199,21 @@ void Gui::start_GUI() {
         ImGui_ImplAllegro5_RenderDrawData(ImGui::GetDrawData());
         al_flip_display();
     }
+}
+
+
+void get_all(const fs::path& root, const string& ext, vector<fs::path>& ret)
+{
+    if (!fs::exists(root) || !fs::is_directory(root)) return;
+
+    fs::recursive_directory_iterator it(root);
+    fs::recursive_directory_iterator endit;
+
+    while (it != endit)
+    {
+        if (fs::is_regular_file(*it) && it->path().extension() == ext) ret.push_back(it->path().filename());
+        ++it;
+
+    }
+
 }
