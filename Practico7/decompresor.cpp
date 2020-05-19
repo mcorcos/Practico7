@@ -19,11 +19,12 @@ bool decompressor::decompress(const char* compressed_img) {
 
 	get_filecode(compressed_img);
 
+	string decompresed_name = create_decompressed_name(compressed_img);
 
 	recDecompressor(DecImage, 0);
 
 
-	lodepng_encode32_file("imagen_nueva.png", DecImage, width, width);
+	lodepng_encode32_file(decompresed_name.c_str(), DecImage, width, width);
 
 	myfile->close();
 	delete[] DecImage;
@@ -52,6 +53,13 @@ void decompressor::get_filecode(const char* compressed_img) {
 	else
 		cout << "No se pudo abrir el archivo";
 
+}
+
+string decompressor::create_decompressed_name(const char* compressed_img)
+{
+	string compressed_img_string = compressed_img;
+	compressed_img_string.replace(compressed_img_string.length() - strlen(".EDA"), strlen(".EDA"), "_nuevo.png");	//cambia la terminacion .var por .png elegida para el archivo comprimido
+	return compressed_img_string;
 }
 
 

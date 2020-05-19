@@ -20,9 +20,11 @@ public:
 private:
 	void recDecompressor(unsigned char* DecImage, unsigned int level);
 	void get_filecode(const char* compressed_img);
+	string create_decompressed_name(const char* compressed_img);
 
 	ifstream* myfile;
 	unsigned int width;
 	unsigned char* DecImage;
+	const char* compressed_name_new_img;
 	string decompressedFile;
 };

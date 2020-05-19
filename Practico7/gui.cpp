@@ -130,7 +130,7 @@ void Gui::start_GUI() {
                 }
                 for (int j = 0; j < png_files.size(); j++)
                 {
-                    if (!dcomp.decompress(png_files[0].string().c_str())) {
+                    if (!dcomp.decompress(png_files[j].string().c_str())) {
                         std::cout << "could not compress" << std::endl;
                     }
                 }
